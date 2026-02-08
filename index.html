@@ -8,6 +8,8 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
+html{ transform-origin: top left; }
+
 body{
   margin:0;
   overflow:hidden;
@@ -20,30 +22,27 @@ body{
 /* ESCENAS */
 .scene{
   position:absolute;
-  width:100%;
+  width:430px;
   height:100vh;
   top:0; left:0;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
   padding:20px;
   box-sizing:border-box;
   transition:transform 1.2s ease;
 }
-#scene2{ transform:translateX(100%); }
+#scene2{ transform:translateX(430px); }
 
 /* TEXTO */
 #texto{
-  margin-top:20px;
-  font-size:22px;
+  font-size:20px;
   text-align:center;
-  max-width:900px;
   line-height:1.5;
-  min-height:200px;
+  min-height:190px;
 }
 
-/* ZONA CORAZÓN */
+/* CORAZÓN ZONA */
 #zonaCorazon{
   position:relative;
   width:100%;
@@ -51,7 +50,6 @@ body{
   overflow:hidden;
 }
 
-/* CORAZONES */
 .heart{
   position:absolute;
   width:18px;height:18px;
@@ -69,9 +67,9 @@ body{
 
 /* BOTON */
 button{
-  margin-top:10px;
-  padding:10px 24px;
-  font-size:18px;
+  margin-top:8px;
+  padding:10px 22px;
+  font-size:16px;
   border:none;
   border-radius:10px;
   background:#ff4d88;
@@ -88,7 +86,7 @@ button{
 }
 .collage img{
   position:absolute;
-  width:32%;
+  width:40%;
   opacity:0;
   transform:scale(0.5);
   transition:all 1s ease;
@@ -101,16 +99,16 @@ button{
 /* SOBRE */
 #sobre{
   position:absolute;
-  right:-350px;
+  right:-320px;
   bottom:8%;
-  width:220px;
+  width:200px;
   transition:right 2s ease;
 }
 #carta{
   position:absolute;
-  bottom:90px;
-  left:20px;
-  width:180px;
+  bottom:80px;
+  left:15px;
+  width:170px;
   height:0;
   background:white;
   color:black;
@@ -119,7 +117,7 @@ button{
   padding:10px;
   box-sizing:border-box;
   text-align:center;
-  font-size:16px;
+  font-size:14px;
 }
 </style>
 </head>
@@ -157,6 +155,14 @@ button{
 </div>
 
 <script>
+// ===== ESCALA RESPONSIVA =====
+function escalar(){
+  const scale = window.innerWidth / 430;
+  document.documentElement.style.transform = `scale(${scale})`;
+}
+window.addEventListener("resize", escalar);
+escalar();
+
 // ===== TEXTO =====
 const mensaje = `Mi Laura, usted es una de las pocas razones por las que estoy contento 
 de haber vivido en este tiempo, y es que el mundo se me hace menos mundo desde 
@@ -178,7 +184,7 @@ function escribir(){
 }
 escribir();
 
-// ===== LLUVIA =====
+// ===== LLUVIA CONTROLADA =====
 const zona=document.getElementById("zonaCorazon");
 let hearts=[];
 
@@ -191,7 +197,7 @@ for(let k=0;k<260;k++){
   const h=document.createElement("div");
   h.className="heart";
   h.style.background=colorRandom();
-  h.style.left=Math.random()*window.innerWidth+"px";
+  h.style.left=Math.random()*400+"px";
   h.style.top="-40px";
   h.style.transition="top 3s ease";
   zona.appendChild(h);
@@ -205,7 +211,7 @@ for(let k=0;k<260;k++){
 setTimeout(formarCorazon,5500);
 
 function formarCorazon(){
-  const cx=window.innerWidth/2, cy=zona.clientHeight-120, size=260;
+  const cx=215, cy=zona.clientHeight-120, size=260;
   hearts.forEach((h,idx)=>{
     let t = Math.PI*2*idx/hearts.length;
     let x = size*16*Math.pow(Math.sin(t),3);
@@ -218,7 +224,7 @@ function formarCorazon(){
 
 // ===== ESCENA 2 =====
 function nextScene(){
-  scene1.style.transform="translateX(-100%)";
+  scene1.style.transform="translateX(-430px)";
   scene2.style.transform="translateX(0)";
   startCollage();
 }
@@ -228,15 +234,14 @@ function startCollage(){
   imgs.forEach((img,i)=>{
     setTimeout(()=> img.classList.add("show"), i*700);
   });
-  setTimeout(mostrarSobre, imgs.length*700 + 1200);
-}
-
-function mostrarSobre(){
-  sobre.style.right="20px";
-  setTimeout(()=> carta.style.height="90px",2000);
+  setTimeout(()=>{
+    sobre.style.right="20px";
+    setTimeout(()=> carta.style.height="80px",2000);
+  }, imgs.length*700 + 1200);
 }
 </script>
 
 </body>
 </html>
+
 
