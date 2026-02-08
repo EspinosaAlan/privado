@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Para ti ❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:'Special Elite', monospace;
+  background:url("foto8.jpg") center/cover no-repeat fixed;
+}
+
+/* ESCENAS */
+.scene{
+  position:absolute;
+  width:100%;
+  height:100vh;
+  top:0; left:0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:60px;
+  box-sizing:border-box;
+  transition:transform 1.2s ease;
+}
+#scene2{ transform:translateX(100%); }
+
+/* LADOS */
+#left{ width:50%; height:85%; position:relative; overflow:hidden; }
+#right{
+  width:45%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+#texto{
+  font-size:30px;
+  text-align:center;
+  line-height:1.5;
+  min-height:260px;
+}
+
+button{
+  margin-top:25px;
+  padding:12px 28px;
+  font-size:20px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d88;
+  color:white;
+  cursor:pointer;
+  display:none;
+}
+
+/* CORAZONES */
+.heart{
+  position:absolute;
+  width:20px;height:20px;
+  transform:rotate(45deg);
+}
+.heart:before,.heart:after{
+  content:"";
+  position:absolute;
+  width:20px;height:20px;
+  border-radius:50%;
+  background:inherit;
+}
+.heart:before{ top:-10px; }
+.heart:after{ left:-10px; }
+
+/* COLLAGE */
+.collage img{
+  position:absolute;
+  width:180px;
+  opacity:0;
+  transform:scale(0.5);
+  transition:all 1s ease;
+}
+.show{
+  opacity:1 !important;
+  transform:scale(1) !important;
+}
+
+/* SOBRE */
+#sobre{
+  position:absolute;
+  right:-400px;
+  bottom:80px;
+  width:300px;
+  height:200px;
+  transition:right 2s ease;
+}
+#carta{
+  position:absolute;
+  bottom:120px;
+  left:30px;
+  width:240px;
+  height:0;
+  background:white;
+  overflow:hidden;
+  transition:height 2s ease;
+  padding:15px;
+  box-sizing:border-box;
+  font-size:20px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ESCENA 1 -->
+<div id="scene1" class="scene">
+  <div id="left"></div>
+  <div id="right">
+    <div id="texto"></div>
+    <button id="btnNext" onclick="nextScene()">Siguiente</button>
+  </div>
+</div>
+
+<!-- ESCENA 2 -->
+<div id="scene2" class="scene" style="justify-content:center;">
+  <div class="collage">
+    <img src="foto1.jpeg" style="top:15%; left:15%;">
+    <img src="foto2.jpeg" style="top:25%; left:55%;">
+    <img src="foto3.jpeg" style="top:50%; left:20%;">
+    <img src="foto4.jpeg" style="top:40%; left:65%;">
+    <img src="foto5.jpeg" style="top:60%; left:45%;">
+    <img src="foto6.jpeg" style="top:30%; left:35%;">
+    <img src="foto7.jpeg" style="top:55%; left:70%;">
+  </div>
+
+  <!-- Sobre -->
+  <div id="sobre">
+    <svg viewBox="0 0 300 200">
+      <rect x="0" y="50" width="300" height="150" fill="#f5deb3"/>
+      <polygon points="0,50 150,0 300,50" fill="#deb887"/>
+    </svg>
+    <div id="carta">
+      ❤️ ¿Te gustaría ser mi Valentín? ❤️
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== TEXTO EXACTO =====
+const mensaje = `Mi Laura, usted es una de las pocas razones por las que estoy contento 
+de haber vivido en este tiempo, y es que el mundo se me hace menos mundo desde 
+sé que estás en él. 
+La vida ya tenia sentido, pero contigo descubrí que tiene más.
+Mientras unos respiran para sentir el milagro de vivir,
+Yo respiro para sentir el milagro de poderte amar.
+Ahora, quisiera preguntarte algo...`;
+
+let i=0;
+function escribir(){
+  if(i < mensaje.length){
+    texto.innerHTML += mensaje.charAt(i);
+    i++;
+    setTimeout(escribir,35);
+  }else{
+    btnNext.style.display="block";
+  }
+}
+escribir();
+
+// ===== LLUVIA Y CORAZÓN =====
+const left = document.getElementById("left");
+let hearts=[];
+
+function colorRandom(){
+  const c=["#ff4d88","#ff99bb","#ff3366","#ff6699","#ff1a75"];
+  return c[Math.floor(Math.random()*c.length)];
+}
+
+for(let k=0;k<280;k++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.background=colorRandom();
+  h.style.left=Math.random()*450+"px";
+  h.style.top="-50px";
+  h.style.transition="top 3s ease";
+  left.appendChild(h);
+  hearts.push(h);
+
+  setTimeout(()=>{
+    h.style.top=(350 + Math.random()*80)+"px";
+  }, Math.random()*2000);
+}
+
+setTimeout(formarCorazon,5500);
+
+function formarCorazon(){
+  const cx=260, cy=250, size=300;
+  hearts.forEach((h,idx)=>{
+    let t = Math.PI*2*idx/hearts.length;
+    let x = size*16*Math.pow(Math.sin(t),3);
+    let y = -size*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+    h.style.transition="all 3s ease";
+    h.style.left = (cx + x/25)+"px";
+    h.style.top  = (cy + y/25)+"px";
+  });
+}
+
+// ===== ESCENA 2 =====
+function nextScene(){
+  scene1.style.transform="translateX(-100%)";
+  scene2.style.transform="translateX(0)";
+  startCollage();
+}
+
+function startCollage(){
+  const imgs=document.querySelectorAll(".collage img");
+  imgs.forEach((img,i)=>{
+    setTimeout(()=> img.classList.add("show"), i*800);
+  });
+
+  setTimeout(mostrarSobre, imgs.length*800 + 1500);
+}
+
+function mostrarSobre(){
+  const sobre=document.getElementById("sobre");
+  const carta=document.getElementById("carta");
+  sobre.style.right="80px";
+  setTimeout(()=> carta.style.height="120px",2000);
+}
+</script>
+
+</body>
+</html>
