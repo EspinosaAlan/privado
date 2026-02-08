@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Para ti ❤️</title>
 
 <style>
@@ -12,6 +13,8 @@ body{
   overflow:hidden;
   font-family:'Special Elite', monospace;
   background:url("foto8.jpg") center/cover no-repeat fixed;
+  color:white;
+  text-shadow:2px 2px 6px black;
 }
 
 /* ESCENAS */
@@ -21,35 +24,54 @@ body{
   height:100vh;
   top:0; left:0;
   display:flex;
-  justify-content:space-between;
+  flex-direction:column;
   align-items:center;
-  padding:60px;
+  justify-content:flex-start;
+  padding:20px;
   box-sizing:border-box;
   transition:transform 1.2s ease;
 }
 #scene2{ transform:translateX(100%); }
 
-/* LADOS */
-#left{ width:50%; height:85%; position:relative; overflow:hidden; }
-#right{
-  width:45%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
+/* TEXTO */
 #texto{
-  font-size:30px;
+  margin-top:20px;
+  font-size:22px;
   text-align:center;
+  max-width:900px;
   line-height:1.5;
-  min-height:260px;
+  min-height:200px;
 }
 
+/* ZONA CORAZÓN */
+#zonaCorazon{
+  position:relative;
+  width:100%;
+  height:55%;
+  overflow:hidden;
+}
+
+/* CORAZONES */
+.heart{
+  position:absolute;
+  width:18px;height:18px;
+  transform:rotate(45deg);
+}
+.heart:before,.heart:after{
+  content:"";
+  position:absolute;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:inherit;
+}
+.heart:before{ top:-9px; }
+.heart:after{ left:-9px; }
+
+/* BOTON */
 button{
-  margin-top:25px;
-  padding:12px 28px;
-  font-size:20px;
+  margin-top:10px;
+  padding:10px 24px;
+  font-size:18px;
   border:none;
   border-radius:10px;
   background:#ff4d88;
@@ -58,26 +80,15 @@ button{
   display:none;
 }
 
-/* CORAZONES */
-.heart{
-  position:absolute;
-  width:20px;height:20px;
-  transform:rotate(45deg);
-}
-.heart:before,.heart:after{
-  content:"";
-  position:absolute;
-  width:20px;height:20px;
-  border-radius:50%;
-  background:inherit;
-}
-.heart:before{ top:-10px; }
-.heart:after{ left:-10px; }
-
 /* COLLAGE */
+.collage{
+  position:relative;
+  width:100%;
+  height:70%;
+}
 .collage img{
   position:absolute;
-  width:180px;
+  width:32%;
   opacity:0;
   transform:scale(0.5);
   transition:all 1s ease;
@@ -90,25 +101,25 @@ button{
 /* SOBRE */
 #sobre{
   position:absolute;
-  right:-400px;
-  bottom:80px;
-  width:300px;
-  height:200px;
+  right:-350px;
+  bottom:8%;
+  width:220px;
   transition:right 2s ease;
 }
 #carta{
   position:absolute;
-  bottom:120px;
-  left:30px;
-  width:240px;
+  bottom:90px;
+  left:20px;
+  width:180px;
   height:0;
   background:white;
+  color:black;
   overflow:hidden;
   transition:height 2s ease;
-  padding:15px;
+  padding:10px;
   box-sizing:border-box;
-  font-size:20px;
   text-align:center;
+  font-size:16px;
 }
 </style>
 </head>
@@ -117,26 +128,23 @@ button{
 
 <!-- ESCENA 1 -->
 <div id="scene1" class="scene">
-  <div id="left"></div>
-  <div id="right">
-    <div id="texto"></div>
-    <button id="btnNext" onclick="nextScene()">Siguiente</button>
-  </div>
+  <div id="texto"></div>
+  <div id="zonaCorazon"></div>
+  <button id="btnNext" onclick="nextScene()">Siguiente</button>
 </div>
 
 <!-- ESCENA 2 -->
-<div id="scene2" class="scene" style="justify-content:center;">
+<div id="scene2" class="scene">
   <div class="collage">
-    <img src="foto1.jpeg" style="top:15%; left:15%;">
-    <img src="foto2.jpeg" style="top:25%; left:55%;">
-    <img src="foto3.jpeg" style="top:50%; left:20%;">
-    <img src="foto4.jpeg" style="top:40%; left:65%;">
-    <img src="foto5.jpeg" style="top:60%; left:45%;">
-    <img src="foto6.jpeg" style="top:30%; left:35%;">
-    <img src="foto7.jpeg" style="top:55%; left:70%;">
+    <img src="foto1.jpeg" style="top:5%; left:5%;">
+    <img src="foto2.jpeg" style="top:10%; left:55%;">
+    <img src="foto3.jpeg" style="top:40%; left:10%;">
+    <img src="foto4.jpeg" style="top:35%; left:60%;">
+    <img src="foto5.jpeg" style="top:65%; left:30%;">
+    <img src="foto6.jpeg" style="top:20%; left:30%;">
+    <img src="foto7.jpeg" style="top:55%; left:65%;">
   </div>
 
-  <!-- Sobre -->
   <div id="sobre">
     <svg viewBox="0 0 300 200">
       <rect x="0" y="50" width="300" height="150" fill="#f5deb3"/>
@@ -149,7 +157,7 @@ button{
 </div>
 
 <script>
-// ===== TEXTO EXACTO =====
+// ===== TEXTO =====
 const mensaje = `Mi Laura, usted es una de las pocas razones por las que estoy contento 
 de haber vivido en este tiempo, y es que el mundo se me hace menos mundo desde 
 sé que estás en él. 
@@ -163,15 +171,15 @@ function escribir(){
   if(i < mensaje.length){
     texto.innerHTML += mensaje.charAt(i);
     i++;
-    setTimeout(escribir,35);
+    setTimeout(escribir,30);
   }else{
     btnNext.style.display="block";
   }
 }
 escribir();
 
-// ===== LLUVIA Y CORAZÓN =====
-const left = document.getElementById("left");
+// ===== LLUVIA =====
+const zona=document.getElementById("zonaCorazon");
 let hearts=[];
 
 function colorRandom(){
@@ -179,25 +187,25 @@ function colorRandom(){
   return c[Math.floor(Math.random()*c.length)];
 }
 
-for(let k=0;k<280;k++){
+for(let k=0;k<260;k++){
   const h=document.createElement("div");
   h.className="heart";
   h.style.background=colorRandom();
-  h.style.left=Math.random()*450+"px";
-  h.style.top="-50px";
+  h.style.left=Math.random()*window.innerWidth+"px";
+  h.style.top="-40px";
   h.style.transition="top 3s ease";
-  left.appendChild(h);
+  zona.appendChild(h);
   hearts.push(h);
 
   setTimeout(()=>{
-    h.style.top=(350 + Math.random()*80)+"px";
+    h.style.top=(zona.clientHeight-40)+"px";
   }, Math.random()*2000);
 }
 
 setTimeout(formarCorazon,5500);
 
 function formarCorazon(){
-  const cx=260, cy=250, size=300;
+  const cx=window.innerWidth/2, cy=zona.clientHeight-120, size=260;
   hearts.forEach((h,idx)=>{
     let t = Math.PI*2*idx/hearts.length;
     let x = size*16*Math.pow(Math.sin(t),3);
@@ -218,19 +226,17 @@ function nextScene(){
 function startCollage(){
   const imgs=document.querySelectorAll(".collage img");
   imgs.forEach((img,i)=>{
-    setTimeout(()=> img.classList.add("show"), i*800);
+    setTimeout(()=> img.classList.add("show"), i*700);
   });
-
-  setTimeout(mostrarSobre, imgs.length*800 + 1500);
+  setTimeout(mostrarSobre, imgs.length*700 + 1200);
 }
 
 function mostrarSobre(){
-  const sobre=document.getElementById("sobre");
-  const carta=document.getElementById("carta");
-  sobre.style.right="80px";
-  setTimeout(()=> carta.style.height="120px",2000);
+  sobre.style.right="20px";
+  setTimeout(()=> carta.style.height="90px",2000);
 }
 </script>
 
 </body>
 </html>
+
